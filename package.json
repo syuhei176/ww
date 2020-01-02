@@ -3,13 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 5000",
     "build": "next build",
     "start": "next start"
   },
   "dependencies": {
     "next": "9.1.6",
     "react": "16.12.0",
-    "react-dom": "16.12.0"
+    "react-dom": "16.12.0",
+    "ethers": "^4.0.41",
+    "wakkanay": "file:../wakkanay",
+    "wakkanay-ethereum": "file:../wakkanay-ethereum",
+    "wakkanay-plasma-light-client": "file:../wakkanay-plasma-light-client"
+  },
+  "devDependencies": {
+    "@babel/plugin-syntax-bigint": "^7.7.4"
   }
 }
