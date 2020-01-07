@@ -21,7 +21,7 @@ const Home = () => (
     <button onClick={
       () => {
         if (client) {
-          client.deposit(10, Address.from(process.env.TOKEN_ADDRESS))
+          client.deposit(10)
         }
       }
     }>deposit</button>
@@ -38,6 +38,12 @@ const Home = () => (
         client.transfer(6, Address.from(process.env.DEPOSIT_CONTRACT_ADDRESS), Address.default())
       }
     }}>transfer</button>
+
+    <button onClick={() => {
+      if (client) {
+        console.log(client.address)
+      }
+    }}>Address</button>
 
   </div>
 )

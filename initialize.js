@@ -8,8 +8,11 @@ import {
   ERC20Contract,
   CommitmentContract
 } from 'wakkanay-ethereum/dist/contract'
-import StateManager from 'wakkanay-plasma-light-client/dist/managers/StateManager'
-import SyncManager from 'wakkanay-plasma-light-client/dist/managers/SyncManager'
+import {
+  StateManager,
+  SyncManager,
+  CheckpointManager
+} from 'wakkanay-plasma-light-client/dist/managers'
 
 async function instantiate() {
   const kvs = new IndexedDbKeyValueStore(Bytes.fromString('plasma_aggregator'))
@@ -36,6 +39,9 @@ async function instantiate() {
   const syncDb = await kvs.bucket(Bytes.fromString('sync'))
   const syncManager = new SyncManager(syncDb)
 
+  const checkpointDb = await kvs.bucket(Bytes.fromString('checkpoint')) 
+  const checkpointManager = new CheckpointManager(checkpointDb)
+
   const commitmentContract = new CommitmentContract(
     Address.from(process.env.COMMITMENT_CONTRACT_ADDRESS),
     eventDb,
@@ -49,16 +55,13 @@ async function instantiate() {
     tokenContractFactory,
     commitmentContract,
     stateManager,
-    syncManager
+    syncManager,
+    checkpointManager
   )
 }
 
 export default async function initialize() {
   const lightClient = await instantiate()
-  lightClient.registerToken(
-    Address.from(process.env.TOKEN_ADDRESS),
-    Address.from(process.env.DEPOSIT_CONTRACT_ADDRESS)
-  )
   await lightClient.start()
 
   return lightClient
